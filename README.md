@@ -4,6 +4,9 @@ GitHub Action to build Unity project.
 
 Works on Ubuntu, macOS and Windows.
 
+This fork of [kuler90/build-unity](https://github.com/kuler90/build-unity).
+Default build method was removed. Unity on build activation added ( to give unity ability to upload symbols/dSym files on build ).
+
 ## Inputs
 
 ### `unity-path`
@@ -38,21 +41,17 @@ Set scripting define symbols. For example, `RELEASE_VERSION;ENG_VERSION`. Only f
 
 List of additional [BuildOptions](https://docs.unity3d.com/ScriptReference/BuildOptions.html). For example, `SymlinkLibraries, CompressWithLz4HC`. Only for default build method.
 
-### `android-keystore-base64`
+### `unity-username`
 
-The base64 contents of the android keystore file. Only for default build method.
+Unity account user name.
 
-### `android-keystore-pass`
+### `unity-password`
 
-The android keystore password. Only for default build method.
+Unity account user password.
 
-### `android-keyalias-name`
+### `unity-serial`
 
-The android keyalias name. Only for default build method.
-
-### `android-keyalias-pass`
-
-The android keyalias password. Only for default build method.
+Unity account serial key.
 
 ### `build-method`
 
@@ -77,18 +76,13 @@ Path to build output.
 - name: Setup Unity
   uses: kuler90/setup-unity@v1
   with:
-    unity-modules: android
-
-- name: Activate Unity
-  uses: kuler90/activate-unity@v1
-  with:
-    unity-username: ${{ secrets.UNITY_USERNAME }}
-    unity-password: ${{ secrets.UNITY_PASSWORD }}
-    unity-authenticator-key: ${{ secrets.UNITY_AUTHENTICATOR_KEY }}
+    unity-modules: android ios
 
 - name: Build Unity
-  uses: kuler90/build-unity@v1
+  uses: TiltingPoint/build-unity-github-action@v1.0.6
   with:
     build-target: Android
     build-path: ./build.apk
+    build-method: MyBuilder.Build
+    build-method-args: -someParameter "someValue"
 ```

@@ -3,7 +3,7 @@
   "description": "build unity action",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kuler90/build-unity.git"
+    "url": "git+https://github.com/TiltingPoint/build-unity-github-action.git"
   },
   "license": "MIT",
   "dependencies": {

@@ -16,10 +16,6 @@ async function run() {
         const buildNumber = core.getInput('build-number');
         const buildDefines = core.getInput('build-defines');
         const buildOptions = core.getInput('build-options');
-        const androidKeystoreBase64 = core.getInput('android-keystore-base64');
-        const androidKeystorePass = core.getInput('android-keystore-pass');
-        const androidKeyaliasName = core.getInput('android-keyalias-name');
-        const androidKeyaliasPass = core.getInput('android-keyalias-pass');
         
         const unityUsername = core.getInput('unity-username');
         const unityPassword = core.getInput('unity-password');
@@ -29,11 +25,7 @@ async function run() {
         const buildMethodArgs = core.getInput('build-method-args');
 
         if (!buildMethod) {
-            buildMethod = 'kuler90.BuildCommand.Build';
-            const src = path.join(__dirname, 'BuildCommand.cs');
-            const dest = path.join(projectPath, 'Assets/kuler90/Editor');
-            await io.mkdirP(dest);
-            await io.cp(src, dest);
+            throw new Error('build method not found');
         }
 
         let unityCmd = '';
@@ -72,18 +64,6 @@ async function run() {
         }
         if (buildOptions) {
             buildArgs += ` -buildOptions "${buildOptions}"`;
-        }
-        if (androidKeystoreBase64) {
-            buildArgs += ` -androidKeystoreBase64 "${androidKeystoreBase64}"`;
-        }
-        if (androidKeystorePass) {
-            buildArgs += ` -androidKeystorePass "${androidKeystorePass}"`;
-        }
-        if (androidKeyaliasName) {
-            buildArgs += ` -androidKeyaliasName "${androidKeyaliasName}"`;
-        }
-        if (androidKeyaliasPass) {
-            buildArgs += ` -androidKeyaliasPass "${androidKeyaliasPass}"`;
         }
 
         await exec.exec(`${unityCmd} -batchmode -nographics -quit -logFile "-" ${buildArgs}`);
