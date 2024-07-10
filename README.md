@@ -67,6 +67,10 @@ Custom arguments for build method.
 
 Path to build output.
 
+### `run-tests`
+
+Run tests.
+
 ## Example usage
 
 ```yaml

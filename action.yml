@@ -50,6 +50,9 @@ inputs:
   build-method-args:
     description: Custom arguments for build method
     required: false
+  run-tests:
+    description: Run tests. Ignores 'build-method', but uses 'build-method-args'.
+    required: false
 outputs:
   build-path:
     description: Path to build output

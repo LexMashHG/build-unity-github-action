@@ -22,10 +22,13 @@ async function run() {
         const unitySerial = core.getInput('unity-serial');
         
         let buildMethod = core.getInput('build-method');
+        let runTests = core.getInput('run-tests');
         const buildMethodArgs = core.getInput('build-method-args');
 
-        if (!buildMethod) {
-            throw new Error('build method not found');
+        if (!runTests) {
+            if (!buildMethod) {
+                throw new Error('build method not found! Set [run-tests] or [build-method].');
+            }
         }
 
         let unityCmd = '';
@@ -37,9 +40,14 @@ async function run() {
 
         let buildArgs = '';
         buildArgs += ` -projectPath "${projectPath}"`;
-        buildArgs += ` -buildTarget "${buildTatget}"`;
-        buildArgs += ` -buildPath "${buildPath}"`;
-        buildArgs += ` -executeMethod "${buildMethod}"`;
+        if (!runTests) {
+            buildArgs += ` -buildTarget "${buildTatget}"`;
+            buildArgs += ` -buildPath "${buildPath}"`;
+            buildArgs += ` -executeMethod "${buildMethod}"`;
+        } else {
+            buildArgs += ` -runTests`;
+        }
+
         buildArgs += ` ${buildMethodArgs}`;
         
         if (unitySerial) {
