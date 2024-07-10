@@ -73,7 +73,7 @@ async function run() {
             }
             await exec.exec(`${unityCmd} -batchmode -nographics -quit -logFile "-" ${buildArgs}`);
         } else {
-            await exec.exec(`${unityCmd} -runTests -batchmode -nographics -quit -logFile "-" ${buildArgs}`);
+            await exec.exec(`${unityCmd} -runTests -batchmode -nographics ${buildArgs}`);
         }
 
         core.setOutput('build-path', buildPath);
