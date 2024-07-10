@@ -44,8 +44,6 @@ async function run() {
             buildArgs += ` -buildTarget "${buildTatget}"`;
             buildArgs += ` -buildPath "${buildPath}"`;
             buildArgs += ` -executeMethod "${buildMethod}"`;
-        } else {
-            buildArgs += ` -runTests`;
         }
 
         buildArgs += ` ${buildMethodArgs}`;
@@ -59,22 +57,24 @@ async function run() {
         if (unityPassword) {
             buildArgs += ` -password "${unityPassword}"`;
         }
-        
-        
-        if (buildVersion) {
-            buildArgs += ` -buildVersion "${buildVersion}"`;
-        }
-        if (buildNumber) {
-            buildArgs += ` -buildNumber "${buildNumber}"`;
-        }
-        if (buildDefines) {
-            buildArgs += ` -buildDefines "${buildDefines}"`;
-        }
-        if (buildOptions) {
-            buildArgs += ` -buildOptions "${buildOptions}"`;
-        }
 
-        await exec.exec(`${unityCmd} -batchmode -nographics -quit -logFile "-" ${buildArgs}`);
+        if (!runTests) {
+            if (buildVersion) {
+                buildArgs += ` -buildVersion "${buildVersion}"`;
+            }
+            if (buildNumber) {
+                buildArgs += ` -buildNumber "${buildNumber}"`;
+            }
+            if (buildDefines) {
+                buildArgs += ` -buildDefines "${buildDefines}"`;
+            }
+            if (buildOptions) {
+                buildArgs += ` -buildOptions "${buildOptions}"`;
+            }
+            await exec.exec(`${unityCmd} -batchmode -nographics -quit -logFile "-" ${buildArgs}`);
+        } else {
+            await exec.exec(`${unityCmd} -runTests -batchmode -nographics -quit -logFile "-" ${buildArgs}`);
+        }
 
         core.setOutput('build-path', buildPath);
     } catch (error) {
